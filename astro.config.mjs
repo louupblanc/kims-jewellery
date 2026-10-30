@@ -6,5 +6,8 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   output: 'static',
   site: process.env.PUBLIC_SITE_URL ?? 'https://example.com',
+  // Styles toujours en fichier externe (jamais inlinés dans le HTML) : la CSP
+  // style-src 'self' de public/_headers reste ainsi déterministe.
+  build: { inlineStylesheets: 'never' },
   integrations: [sitemap()],
 });

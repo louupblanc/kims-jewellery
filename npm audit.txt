@@ -1,0 +1,70 @@
+# npm audit report
+
+js-yaml  <=3.15.1
+Severity: high
+js-yaml has prototype pollution in merge (<<) - https://github.com/advisories/GHSA-mh29-5h37-fv8m
+JS-YAML: Quadratic-complexity DoS in merge key handling via repeated aliases - https://github.com/advisories/GHSA-h67p-54hq-rp68
+js-yaml: YAML merge-key chains can force quadratic CPU consumption - https://github.com/advisories/GHSA-52cp-r559-cp3m
+JS-YAML: Quadratic CPU consumption in !!omap resolution (3.x and 4.x) — CVE-2026-59870 fix not backported - https://github.com/advisories/GHSA-5p4m-2wfm-xmqj
+js-yaml: maxTotalMergeKeys does not limit CPU use for empty merge sources - https://github.com/advisories/GHSA-2883-xcg3-v3hh
+fix available via `npm audit fix --force`
+Will install sanity@6.1.0, which is a breaking change
+node_modules/js-yaml
+  @vercel/frameworks  >=0.2.1-canary.0
+  Depends on vulnerable versions of js-yaml
+  Depends on vulnerable versions of smol-toml
+  node_modules/@vercel/frameworks
+    @sanity/cli  >=7.3.0
+    Depends on vulnerable versions of @sanity/cli-build
+    Depends on vulnerable versions of @sanity/runtime-cli
+    Depends on vulnerable versions of @sanity/workbench-cli
+    Depends on vulnerable versions of @vercel/frameworks
+    node_modules/@sanity/cli
+      sanity  3.94.1-next.0.6739e10a32 - 3.94.1 || 5.21.1-next.3 - 5.22.0-workbench.20260422143508 || >=6.1.1-next.1
+      Depends on vulnerable versions of @sanity/cli
+      node_modules/sanity
+        @sanity/cli-build  >=1.1.0
+        Depends on vulnerable versions of @sanity/workbench-cli
+        Depends on vulnerable versions of sanity
+        node_modules/@sanity/cli-build
+          @sanity/blueprints  >=0.29.0
+          Depends on vulnerable versions of @sanity/cli-build
+          node_modules/@sanity/runtime-cli/node_modules/@sanity/blueprints
+            @sanity/runtime-cli  17.2.0-blueprinit.g3a96975 - 17.2.0-next.ga4b9ae7 || >=17.3.0-blueprinit.g6a63623
+            Depends on vulnerable versions of @sanity/blueprints
+            Depends on vulnerable versions of @sanity/cli-build
+            node_modules/@sanity/runtime-cli
+
+smol-toml  <=1.8.0
+Severity: high
+smol-toml: Denial of Service via TOML documents containing thousands of consecutive commented lines - https://github.com/advisories/GHSA-v3rj-xjv7-4jmq
+smol-toml: Denial of Service via malformed TOML documents - https://github.com/advisories/GHSA-7w5x-hrqm-74c2
+smol-toml: Quadratic-time parse() from parseKey rescanning to end of document on each key line - https://github.com/advisories/GHSA-r4xh-jqrq-34v2
+fix available via `npm audit fix --force`
+Will install sanity@6.1.0, which is a breaking change
+node_modules/@vercel/frameworks/node_modules/smol-toml
+
+undici  7.0.0 - 7.30.0
+Severity: high
+undici vulnerable to Denial of Service via unbounded memory in the EventSource parser - https://github.com/advisories/GHSA-4qv8-2p9j-2685
+undici vulnerable to Subresource Integrity bypass via non-lowercase algorithm tokens - https://github.com/advisories/GHSA-f72v-6w45-q472
+undici vulnerable to Denial of Service via unhandled error on excessive content-encodings - https://github.com/advisories/GHSA-xjj6-f33q-929c
+undici vulnerable to cache poisoning and cross-user disclosure via cross-origin redirects - https://github.com/advisories/GHSA-4w7w-5xrc-9h26
+undici vulnerable to TLS certificate validation bypass via dropped tls options in Agent - https://github.com/advisories/GHSA-2m5v-pch6-74hx
+undici vulnerable to Denial of Service via TLS 1.2 certificate-changing renegotiation - https://github.com/advisories/GHSA-qrxm-fqhp-jwvm
+undici WebSocket client vulnerable to Denial of Service via unbounded automatic PONG buffering - https://github.com/advisories/GHSA-9fm3-97px-rjf6
+undici vulnerable to Denial of Service via unhandled exception in the decompress interceptor - https://github.com/advisories/GHSA-55wc-3pg8-jfw6
+fix available via `npm audit fix --force`
+Will install sanity@6.1.0, which is a breaking change
+node_modules/@module-federation/dts-plugin/node_modules/undici
+  @module-federation/dts-plugin  <=0.0.0-release-v2-9-0-20260824030637 || >=2.3.2
+  Depends on vulnerable versions of undici
+  node_modules/@module-federation/dts-plugin
+    @module-federation/vite  >=1.14.3
+    Depends on vulnerable versions of @module-federation/dts-plugin
+    node_modules/@module-federation/vite
+      @sanity/workbench-cli  *
+      Depends on vulnerable versions of @module-federation/vite
+      node_modules/@sanity/workbench-cli
+
+12 vulnerabilities (9 moderate, 3 high)

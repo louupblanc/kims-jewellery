@@ -3,6 +3,10 @@
 import { SITE, NAV_MAIN, NAV_SECONDARY, LEGAL_LINKS, CHROME_COPY } from '../proto/content/site.js';
 import { img } from './sanity.js';
 
+/**
+ * @param {unknown} title
+ * @returns {string}
+ */
 function slugId(title) {
   return String(title ?? "")
     .toLowerCase()
@@ -12,29 +16,41 @@ function slugId(title) {
     .replace(/^-|-$/g, "");
 }
 
+/**
+ * @param {import('./cms-types.js').CmsSlug | null | undefined} ref
+ * @returns {string}
+ */
 function asSlug(ref) {
   if (!ref) return '';
   if (typeof ref === 'string') return ref;
   return ref.current ?? '';
 }
 
+/**
+ * @param {import('./cms-types.js').CatalogueData} data
+ * @returns {import('./cms-types.js').ProductView[]}
+ */
 export function toProtoProducts(data) {
   return (data.products || []).map((p) => {
-    const images = Array.isArray(p.images) ? p.images : (p.image ? [p.image] : []);
-    const catTitle = p.category?.title ?? p.catLabel ?? 'Accessoires';
+    const images = Array.isArray(p.images) ? p.images : [];
+    const catTitle = p.category?.title ?? 'Accessoires';
     return {
       name: p.name,
       slug: asSlug(p.slug) || slugId(p.name),
       price: p.price,
-      cat: asSlug(p.category?.slug) || p.cat || slugId(catTitle),
+      cat: asSlug(p.category?.slug) || slugId(catTitle),
       catLabel: catTitle,
       image: img(images[0]),
       featured: !!p.featured,
-      desc: p.description ?? p.desc ?? '',
+      desc: p.description ?? '',
     };
   });
 }
 
+/**
+ * @param {import('./cms-types.js').CatalogueData} data
+ * @returns {import('./cms-types.js').CategoryView[]}
+ */
 export function toProtoCategories(data) {
   const cols = [...(data.collections || [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   return [
@@ -43,15 +59,28 @@ export function toProtoCategories(data) {
   ];
 }
 
+/**
+ * @param {import('./cms-types.js').CatalogueData} data
+ * @returns {Record<string, string>}
+ */
 export function toProtoSite(data) {
-  const s = data.settings || {};
+  /** @type {import('./cms-types.js').CmsSettings} */
+  const s = data.settings ?? {};
+  /** @type {Record<string, string>} */
   const site = { ...SITE };
   for (const key of ['tagline', 'instagramUrl', 'tiktokUrl', 'vintedProfileUrl']) {
-    if (typeof s[key] === 'string' && s[key] !== '') site[key] = s[key];
+    const v = s[key];
+    if (typeof v === 'string' && v !== '') site[key] = v;
   }
   return site;
 }
 
+/**
+ * @template T
+ * @param {import('./cms-types.js').CatalogueData} data
+ * @param {T} [extra]
+ * @returns {import('./cms-types.js').ProtoArgs & T}
+ */
 export function baseArgs(data, extra) {
   return Object.assign(
     {
@@ -69,6 +98,10 @@ export function baseArgs(data, extra) {
 
 // Le prototype écrit des liens en hash (#/collection/x) et des images en
 // src/images/... : on les convertit en routes et chemins absolus du site.
+/**
+ * @param {string} html
+ * @returns {string}
+ */
 export function rewriteHtml(html) {
   return String(html).split('#/').join('/').split('src/images/').join('/images/');
 }

@@ -1,6 +1,7 @@
 // Données CONFIRMÉES uniquement (cahier §4.1). Même forme que la requête
 // Sanity de lib/sanity.js : bascule CMS transparente.
 // Matière 316L confirmée 21/10/2026. Vinted : pas d'URL inventée.
+/** @type {import('./cms-types.js').CatalogueData} */
 export const fallback = {
   settings: {
     brandName: "Kim's Jewellery",

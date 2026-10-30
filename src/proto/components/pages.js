@@ -5,7 +5,7 @@
  */
 import { escapeHtml, formatPrice, safeUrl } from '../lib/format.js';
 import { renderLayout } from './layout.js';
-import { renderProductCard, renderProductGrid } from './product.js';
+import { renderProductGrid } from './product.js';
 
 /**
  * @param {object} args
@@ -62,7 +62,7 @@ export function renderHomePage(args) {
     '<img src="src/images/banniere-reseaux.jpg" alt="' + escapeHtml(copy.reseauxImgAlt) + '" loading="lazy" />' +
     '<div class="contenu"><h2>' + escapeHtml(copy.reseauxTitle) + '</h2>' +
     '<p>' + escapeHtml(copy.reseauxText) + '</p>' +
-    '<p><a class="btn second" href="' + escapeHtml(site.instagramUrl) + '" target="_blank" rel="noopener">' +
+'<p><a class="btn second" href="' + escapeHtml(safeUrl(site.instagramUrl)) + '" target="_blank" rel="noopener">' +
     escapeHtml(copy.reseauxCtaPrefix) + ' ' + escapeHtml(site.instagramHandle) + ' ' + escapeHtml(copy.reseauxCtaSuffix) + '</a></p>' +
     '</div></section>';
 
@@ -205,6 +205,10 @@ export function renderStylePage(args) {
  * @param {object} args
  * @param {{ title:string, notice:string, chapeau:string, essentiel:Array<string>, articles:Array }} args.page
  * @returns {string}
+ *
+ * Frontière de confiance : la copie juridique est relue et versionnée en
+ * dépôt (son HTML — liens, tableaux — est voulu). Tout texte venant du CMS
+ * devra être échappé (escapeHtml) AVANT d'arriver ici.
  */
 export function renderLegalPage(args) {
   const page = args.page;
