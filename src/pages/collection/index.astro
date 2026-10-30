@@ -1,9 +1,9 @@
 ---
-import Base from '../layouts/Base.astro';
-import { getCatalogue } from '../lib/sanity.js';
-import { renderCollectionPage } from '../proto/components/pages.js';
-import { COLLECTION_COPY } from '../proto/content/pages.js';
-import { baseArgs, rewriteHtml } from '../lib/proto-args.js';
+import Base from '../../layouts/Base.astro';
+import { getCatalogue } from '../../lib/sanity.js';
+import { renderCollectionPage } from '../../proto/components/pages.js';
+import { COLLECTION_COPY } from '../../proto/content/pages.js';
+import { baseArgs, rewriteHtml } from '../../lib/proto-args.js';
 const data = await getCatalogue();
 const html = rewriteHtml(renderCollectionPage(baseArgs(data, { copy: COLLECTION_COPY, categoryId: 'tous' })));
 ---
