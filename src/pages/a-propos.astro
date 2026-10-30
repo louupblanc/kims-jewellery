@@ -1,0 +1,10 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCatalogue } from '../lib/sanity.js';
+import { renderAproposPage } from '../proto/components/pages.js';
+import { APROPOS_COPY } from '../proto/content/pages.js';
+import { baseArgs, rewriteHtml } from '../lib/proto-args.js';
+const data = await getCatalogue();
+const html = rewriteHtml(renderAproposPage(baseArgs(data, { copy: APROPOS_COPY })));
+---
+<Base title="À propos" description={APROPOS_COPY.heroSub} bodyHtml={html} />

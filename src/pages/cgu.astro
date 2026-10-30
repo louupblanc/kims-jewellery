@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCatalogue } from '../lib/sanity.js';
+import { renderLegalPage } from '../proto/components/pages.js';
+import { LEGAL_PAGES } from '../proto/content/legal.js';
+import { baseArgs, rewriteHtml } from '../lib/proto-args.js';
+const data = await getCatalogue();
+const page = LEGAL_PAGES['cgu'];
+const html = rewriteHtml(renderLegalPage(baseArgs(data, { page })));
+---
+<Base title={page.title} description={page.chapeau} bodyHtml={html} />

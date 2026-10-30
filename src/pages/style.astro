@@ -1,0 +1,10 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCatalogue } from '../lib/sanity.js';
+import { renderStylePage } from '../proto/components/pages.js';
+import { STYLE_COPY } from '../proto/content/pages.js';
+import { baseArgs, rewriteHtml } from '../lib/proto-args.js';
+const data = await getCatalogue();
+const html = rewriteHtml(renderStylePage(baseArgs(data, { copy: STYLE_COPY })));
+---
+<Base title="Le style Kim's" description={`${STYLE_COPY.subtitleA} ${STYLE_COPY.subtitleB}`} bodyHtml={html} />

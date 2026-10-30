@@ -1,0 +1,10 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCatalogue } from '../lib/sanity.js';
+import { renderNotFoundPage } from '../proto/components/pages.js';
+import { NOT_FOUND_COPY } from '../proto/content/pages.js';
+import { baseArgs, rewriteHtml } from '../lib/proto-args.js';
+const data = await getCatalogue();
+const html = rewriteHtml(renderNotFoundPage(baseArgs(data, { notFoundCopy: NOT_FOUND_COPY })));
+---
+<Base title="Page introuvable" description={NOT_FOUND_COPY.text} bodyHtml={html} />

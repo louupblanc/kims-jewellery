@@ -1,0 +1,40 @@
+---
+import '../styles/site.css';
+const { title, description, bodyHtml } = Astro.props;
+const pageTitle = title ? `${title} — Kim's Jewellery` : "Kim's Jewellery";
+---
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{pageTitle}</title>
+{description && <meta name="description" content={description} />}
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♡</text></svg>" />
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+<div id="contenu"><Fragment set:html={bodyHtml} /></div>
+<script>
+document.addEventListener('click', function (e) {
+  var t = e.target && e.target.closest ? e.target.closest('[data-action="toggle-menu"]') : null;
+  if (t) {
+    var h = t.closest('header.site');
+    if (h) {
+      var ouvert = h.classList.toggle('menu-ouvert');
+      t.setAttribute('aria-expanded', String(ouvert));
+    }
+    return;
+  }
+  var s = e.target && e.target.closest ? e.target.closest('[data-scroll]') : null;
+  if (s) {
+    var c = document.getElementById(s.getAttribute('data-scroll'));
+    if (c) {
+      var reduit = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      c.scrollIntoView({ behavior: reduit ? 'auto' : 'smooth', block: 'start' });
+      if (c.focus) c.focus({ preventScroll: true });
+    }
+  }
+});
+</script>
+</body>
+</html>

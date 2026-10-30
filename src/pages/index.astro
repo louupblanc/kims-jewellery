@@ -1,0 +1,10 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCatalogue } from '../lib/sanity.js';
+import { renderHomePage } from '../proto/components/pages.js';
+import { HOME_COPY, META_COPY } from '../proto/content/pages.js';
+import { baseArgs, rewriteHtml } from '../lib/proto-args.js';
+const data = await getCatalogue();
+const html = rewriteHtml(renderHomePage(baseArgs(data, { copy: HOME_COPY })));
+---
+<Base title="Kim's" description={META_COPY.defaultDescription} bodyHtml={html} />

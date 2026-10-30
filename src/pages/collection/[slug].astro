@@ -1,0 +1,42 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCatalogue } from '../../lib/sanity.js';
+import { renderCollectionPage, renderProductPage, renderNotFoundPage } from '../../proto/components/pages.js';
+import { COLLECTION_COPY, PRODUCT_COPY, NOT_FOUND_COPY } from '../../proto/content/pages.js';
+import { baseArgs, rewriteHtml, toProtoCategories, toProtoProducts } from '../../lib/proto-args.js';
+
+export async function getStaticPaths() {
+  const data = await getCatalogue();
+  const paths = toProtoCategories(data)
+    .filter((c) => c.id !== 'tous')
+    .map((c) => ({ params: { slug: c.id }, props: { kind: 'cat' } }));
+  for (const p of toProtoProducts(data)) {
+    paths.push({ params: { slug: p.slug }, props: { kind: 'product' } });
+  }
+  return paths;
+}
+
+const { slug } = Astro.params;
+const data = await getCatalogue();
+const args = baseArgs(data, {});
+const isCat = args.categories.some((c) => c.id === slug);
+let html, title, description;
+if (isCat) {
+  html = rewriteHtml(renderCollectionPage({ ...args, copy: COLLECTION_COPY, categoryId: slug }));
+  const label = args.categories.find((c) => c.id === slug)?.label ?? '';
+  title = `Collection — ${label}`;
+  description = COLLECTION_COPY.heroSub;
+} else {
+  const product = args.products.find((p) => p.slug === slug);
+  if (product) {
+    html = rewriteHtml(renderProductPage({ ...args, copy: PRODUCT_COPY, slug, notFoundCopy: NOT_FOUND_COPY }));
+    title = product.name;
+    description = product.desc;
+  } else {
+    html = rewriteHtml(renderNotFoundPage({ ...args, notFoundCopy: NOT_FOUND_COPY }));
+    title = 'Page introuvable';
+    description = NOT_FOUND_COPY.text;
+  }
+}
+---
+<Base title={title} description={description} bodyHtml={html} />
