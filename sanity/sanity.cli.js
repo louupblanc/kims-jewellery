@@ -8,5 +8,5 @@ export default defineCliConfig({
     dataset: process.env.SANITY_STUDIO_DATASET,
   },
   studioHost: 'kims-jewellery',
-  autoUpdates: true,
+  deployment: {autoUpdates: true},
 });

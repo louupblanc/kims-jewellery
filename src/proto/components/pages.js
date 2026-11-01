@@ -3,7 +3,8 @@
  * Aucun import de contenu ici : tout est injecté par src/app.js (composition root).
  * @module components/pages
  */
-import { escapeHtml, formatPrice, safeUrl } from '../lib/format.js';
+import { escapeHtml, formatPrice, safeUrl, sizeAttrs } from '../lib/format.js';
+import { imageDims } from '../catalogue.js';
 import { renderLayout } from './layout.js';
 import { renderProductGrid } from './product.js';
 
@@ -30,12 +31,12 @@ export function renderHomePage(args) {
   }
   let insta = '';
   for (const p of instaRefs) {
-    insta += '<li><img src="' + escapeHtml(safeUrl(p.image)) + '" alt="' + escapeHtml(p.name) + '" loading="lazy" /></li>';
+    insta += '<li><img src="' + escapeHtml(safeUrl(p.image)) + '"' + sizeAttrs(imageDims(p)) + ' alt="' + escapeHtml(p.name) + '" loading="lazy" /></li>';
   }
 
   const main =
     '<section class="hero" aria-label="' + escapeHtml(copy.heroSectionLabel) + '">' +
-    '<img class="fond" src="src/images/hero-banner.jpg" alt="' + escapeHtml(copy.heroAlt) + '" />' +
+    '<img class="fond" src="src/images/hero-banner.jpg"' + sizeAttrs(imageDims({image: 'src/images/hero-banner.jpg'})) + ' alt="' + escapeHtml(copy.heroAlt) + '" fetchpriority="high" />' +
     '<div class="voile" aria-hidden="true"></div>' +
     '<div class="texte">' +
     '<h1 class="marque">' + escapeHtml(site.brandName) + '<small>' + escapeHtml(site.brandSuffix) + '</small></h1>' +
@@ -50,7 +51,7 @@ export function renderHomePage(args) {
     renderProductGrid(coups) +
     '</div>' +
     '<section class="bandeau-histoire" aria-label="' + escapeHtml(copy.histoireLabel) + '">' +
-    '<img src="src/images/un-bijou-une-histoire.jpg" alt="' + escapeHtml(copy.histoireImgAlt) + '" loading="lazy" />' +
+    '<img src="src/images/un-bijou-une-histoire.jpg"' + sizeAttrs(imageDims({image: 'src/images/un-bijou-une-histoire.jpg'})) + ' alt="' + escapeHtml(copy.histoireImgAlt) + '" loading="lazy" />' +
     '<div class="texte"><p><a class="btn contour" href="#/a-propos">' + escapeHtml(copy.histoireCta) + '</a></p></div>' +
     '</section>' +
     '<div class="wrap"><section class="insta" aria-label="' + escapeHtml(copy.instaLabel) + '">' +
@@ -59,7 +60,7 @@ export function renderHomePage(args) {
     '<ul class="photos">' + insta + '</ul>' +
     '</section></div>' +
     '<section class="bandeau-reseaux" aria-label="' + escapeHtml(copy.reseauxLabel) + '">' +
-    '<img src="src/images/banniere-reseaux.jpg" alt="' + escapeHtml(copy.reseauxImgAlt) + '" loading="lazy" />' +
+    '<img src="src/images/banniere-reseaux.jpg"' + sizeAttrs(imageDims({image: 'src/images/banniere-reseaux.jpg'})) + ' alt="' + escapeHtml(copy.reseauxImgAlt) + '" loading="lazy" />' +
     '<div class="contenu"><h2>' + escapeHtml(copy.reseauxTitle) + '</h2>' +
     '<p>' + escapeHtml(copy.reseauxText) + '</p>' +
 '<p><a class="btn second" href="' + escapeHtml(safeUrl(site.instagramUrl)) + '" target="_blank" rel="noopener">' +
@@ -90,11 +91,11 @@ export function renderCollectionPage(args) {
 
   const main =
     '<section class="page-hero" aria-label="' + escapeHtml(copy.heroLabel) + '">' +
-    '<img src="src/images/banniere-collection.jpg" alt="' + escapeHtml(copy.heroImgAlt) + '" />' +
+    '<img src="src/images/banniere-collection.jpg"' + sizeAttrs(imageDims({image: 'src/images/banniere-collection.jpg'})) + ' alt="' + escapeHtml(copy.heroImgAlt) + '" />' +
     '<div class="texte"><h1 class="serif">' + escapeHtml(copy.heroTitle) + '</h1><p>' + escapeHtml(copy.heroSub) + '</p></div>' +
     '</section>' +
     '<div class="wrap">' +
-    '<nav class="miettes" aria-label="' + escapeHtml(copy.crumbLabel) + '"><a href="#/">' + escapeHtml(copy.crumbHome) + '</a><span class="sep" aria-hidden="true">›</span><span>' + escapeHtml(copy.crumbCurrent) + '</span></nav>' +
+    '<nav class="miettes" aria-label="' + escapeHtml(copy.crumbLabel) + '"><a href="#/">' + escapeHtml(copy.crumbHome) + '</a><span class="sep" aria-hidden="true">›</span><span aria-current="page">' + escapeHtml(copy.crumbCurrent) + '</span></nav>' +
     '<ul class="filtres" id="collection-filters">' + filtres + '</ul>' +
     renderProductGrid(list) +
     '</div>';
@@ -122,14 +123,14 @@ export function renderProductPage(args) {
 
   let perks = '';
   for (const perk of copy.perks) {
-    perks += '<li>' + escapeHtml(perk.icon) + '<br/>' + escapeHtml(perk.text) + '</li>';
+    perks += '<li><span aria-hidden="true">' + escapeHtml(perk.icon) + '</span><span>' + escapeHtml(perk.text) + '</span></li>';
   }
 
   const main =
     '<div class="wrap">' +
-    '<nav class="note" aria-label="' + escapeHtml(copy.crumbLabel) + '"><a href="#/">' + escapeHtml(copy.crumbHome) + '</a> › <a href="#/collection">' + escapeHtml(copy.crumbCollection) + '</a> › ' + escapeHtml(product.name) + '</nav>' +
+    '<nav class="note" aria-label="' + escapeHtml(copy.crumbLabel) + '"><a href="#/">' + escapeHtml(copy.crumbHome) + '</a> › <a href="#/collection">' + escapeHtml(copy.crumbCollection) + '</a> › <span aria-current="page">' + escapeHtml(product.name) + '</span></nav>' +
     '<article class="detail">' +
-    '<figure><img src="' + escapeHtml(safeUrl(product.image)) + '" alt="' + escapeHtml(product.name) + '" /></figure>' +
+    '<figure><img src="' + escapeHtml(safeUrl(product.image)) + '"' + sizeAttrs(imageDims(product)) + ' alt="" /></figure>' +
     '<div><h1>' + escapeHtml(product.name) + '</h1>' +
     '<p class="prix prix--grand">' + escapeHtml(formatPrice(product.price)) + '</p>' +
     '<p class="desc">' + escapeHtml(product.desc) + '</p>' +
@@ -151,19 +152,19 @@ export function renderAproposPage(args) {
   const copy = args.copy;
   let piliers = '';
   for (const pilier of copy.pillars) {
-    piliers += '<li><span class="ico" aria-hidden="true">' + escapeHtml(pilier.icon) + '</span><div><b>' + escapeHtml(pilier.title) + '</b></div><span class="note">' + escapeHtml(pilier.note) + '</span></li>';
+    piliers += '<li><span class="ico" aria-hidden="true">' + escapeHtml(pilier.icon) + '</span><div><strong>' + escapeHtml(pilier.title) + '</strong></div><span class="note">' + escapeHtml(pilier.note) + '</span></li>';
   }
   let paragraphes = '';
   for (const p of copy.paragraphs) paragraphes += '<p>' + escapeHtml(p) + '</p>';
 
   const main =
     '<section class="page-hero" aria-label="' + escapeHtml(copy.heroLabel) + '">' +
-    '<img class="img--position-basse" src="src/images/banniere-a-propos.jpg" alt="' + escapeHtml(copy.heroImgAlt) + '" />' +
+    '<img class="img--position-basse" src="src/images/banniere-a-propos.jpg"' + sizeAttrs(imageDims({image: 'src/images/banniere-a-propos.jpg'})) + ' alt="' + escapeHtml(copy.heroImgAlt) + '" />' +
     '<div class="texte"><h1 class="serif">' + escapeHtml(copy.heroTitle) + '</h1><p>' + escapeHtml(copy.heroSub) + '</p></div>' +
     '</section>' +
     '<div class="wrap">' +
-    '<nav class="note" aria-label="Fil d\u2019Ariane"><a href="#/">' + escapeHtml(copy.crumbHome) + '</a> › ' + escapeHtml(copy.crumbCurrent) + '</nav>' +
-    '<article class="detail detail--espacement"><figure><img src="src/images/hero-banner.jpg" alt="' + escapeHtml(copy.portraitAlt) + '" loading="lazy" /></figure>' +
+    '<nav class="note" aria-label="Fil d\u2019Ariane"><a href="#/">' + escapeHtml(copy.crumbHome) + '</a> › <span aria-current="page">' + escapeHtml(copy.crumbCurrent) + '</span></nav>' +
+    '<article class="detail detail--espacement"><figure><img src="src/images/hero-banner.jpg"' + sizeAttrs(imageDims({image: 'src/images/hero-banner.jpg'})) + ' alt="' + escapeHtml(copy.portraitAlt) + '" loading="lazy" /></figure>' +
     '<div><h2>' + escapeHtml(copy.title) + '</h2>' + paragraphes +
     '<p class="serif signature--grande">' + escapeHtml(copy.signature) + '</p>' +
     '<p class="note">' + escapeHtml(copy.portraitNote) + '</p></div></article>' +
@@ -180,7 +181,7 @@ export function renderStylePage(args) {
   const copy = args.copy;
   let mosaique = '';
   for (const img of copy.mosaic) {
-    mosaique += '<img src="' + escapeHtml(safeUrl(img.src)) + '" alt="' + escapeHtml(img.alt) + '" loading="lazy" />';
+    mosaique += '<img src="' + escapeHtml(safeUrl(img.src)) + '"' + sizeAttrs(imageDims({image: String(img.src)})) + ' alt="' + escapeHtml(img.alt) + '" loading="lazy" />';
   }
   mosaique += '<p class="carte-mot">' + copy.wordCard.map(escapeHtml).join('<br/>') + '</p>';
   let valeurs = '';
@@ -190,7 +191,7 @@ export function renderStylePage(args) {
 
   const main =
     '<div class="wrap">' +
-    '<nav class="note" aria-label="Fil d\u2019Ariane"><a href="#/">' + escapeHtml(copy.crumbHome) + '</a> › ' + escapeHtml(copy.crumbCurrent) + '</nav>' +
+    '<nav class="note" aria-label="Fil d\u2019Ariane"><a href="#/">' + escapeHtml(copy.crumbHome) + '</a> › <span aria-current="page">' + escapeHtml(copy.crumbCurrent) + '</span></nav>' +
     '<h1 class="serif titre--page">' + escapeHtml(copy.title) + '</h1>' +
     '<p class="texte--centre texte--italique">' + escapeHtml(copy.subtitleA) + '<br/>' + escapeHtml(copy.subtitleB) + '</p>' +
     '<div class="mosaique">' + mosaique + '</div>' +
@@ -246,7 +247,9 @@ export function renderLegalPage(args) {
         for (const c of r) cellules += '<td>' + c + '</td>';
         lignes += '<tr>' + cellules + '</tr>';
       }
-      corps += '<div class="jtable"><table><thead><tr>' + tete + '</tr></thead><tbody>' + lignes + '</tbody></table></div>';
+      // Nommage via le titre d'article (déjà lié par aria-labelledby sur la
+      // section) : pas de <caption> visible, aucun changement visuel.
+      corps += '<div class="jtable"><table aria-labelledby="t-art-' + escapeHtml(a.num) + '"><thead><tr>' + tete + '</tr></thead><tbody>' + lignes + '</tbody></table></div>';
     }
     if (a.steps) {
       let etapes = '';
@@ -260,7 +263,7 @@ export function renderLegalPage(args) {
 
   const main =
     '<div class="wrap jpage">' +
-    '<nav class="note" aria-label="Fil d\u2019Ariane"><a href="#/">Accueil</a> › ' + escapeHtml(page.title) + '</nav>' +
+    '<nav class="note" aria-label="Fil d\u2019Ariane"><a href="#/">Accueil</a> › <span aria-current="page">' + escapeHtml(page.title) + '</span></nav>' +
     '<header class="jhero">' +
     '<p class="jbadges"><span class="badge">Version v0.1</span><span class="badge">20/10/2026</span><span class="badge">Lecture ~' + lecture + ' min</span></p>' +
     '<h1>' + escapeHtml(page.title) + '</h1>' +

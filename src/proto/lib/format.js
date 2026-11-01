@@ -28,6 +28,19 @@ export function formatPrice(n) {
 }
 
 /**
+ * Attributs width/height à partir de dimensions [largeur, hauteur].
+ * Réserve l'espace avant chargement (anti-CLS) sans changer le rendu
+ * (le CSS garde la main via object-fit/aspect-ratio). Chaîne vide si
+ * dimensions inconnues : on n'invente jamais de valeurs.
+ * @param {Array<number>|null|undefined} dim
+ * @returns {string}
+ */
+export function sizeAttrs(dim) {
+  if (!Array.isArray(dim) || !Number.isFinite(dim[0]) || !Number.isFinite(dim[1])) return "";
+  return ' width="' + dim[0] + '" height="' + dim[1] + '"';
+}
+
+/**
  * N'accepte qu'une URL sûre à rendre cliquable (https externe, ancre interne, image locale).
  * Retourne "" si l'URL est absente ou suspecte (ex. javascript:).
  * @param {unknown} url

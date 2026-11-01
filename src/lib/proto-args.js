@@ -41,6 +41,8 @@ export function toProtoProducts(data) {
       cat: asSlug(p.category?.slug) || slugId(catTitle),
       catLabel: catTitle,
       image: img(images[0]),
+      imageW: p.imgDims?.w,
+      imageH: p.imgDims?.h,
       featured: !!p.featured,
       desc: p.description ?? '',
     };

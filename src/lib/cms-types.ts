@@ -27,6 +27,8 @@ export interface CmsProduct {
   description?: string;
   material?: string;
   images?: CmsImage[] | null;
+  /** Dimensions de la 1re image (requête GROQ `imgDims`), absentes en repli local. */
+  imgDims?: {w: number; h: number} | null;
   vintedUrl?: string;
   featured?: boolean;
   order?: number;
@@ -58,6 +60,9 @@ export interface ProductView {
   cat: string;
   catLabel: string;
   image: string;
+  /** Dimensions réelles : CMS (`imgDims`) ou table locale, sinon absentes. */
+  imageW?: number;
+  imageH?: number;
   featured: boolean;
   desc: string;
 }

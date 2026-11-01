@@ -26,7 +26,7 @@ export function renderHeader(args) {
     '<header class="site">' +
     '<button type="button" class="burger" data-action="toggle-menu" aria-label="' + escapeHtml(copy.menuLabel) + '" aria-expanded="false">☰</button>' +
     '<nav class="main" aria-label="' + escapeHtml(copy.navMainLabel) + '">' + links + '</nav>' +
-    '<a class="logo" href="#/" aria-label="' + escapeHtml(copy.brandHomeLabel) + '"><b>' + escapeHtml(site.brandName) + '</b><small>' + escapeHtml(site.brandSuffix) + '</small></a>' +
+    '<a class="logo" href="#/" aria-label="' + escapeHtml(copy.brandHomeLabel) + '"><span class="nom">' + escapeHtml(site.brandName) + '</span><small>' + escapeHtml(site.brandSuffix) + '</small></a>' +
     '<div class="social">' + escapeHtml(copy.followUs) +
     ' <a href="' + escapeHtml(safeUrl(site.instagramUrl)) + '" target="_blank" rel="noopener" aria-label="Instagram">' + ICON_INSTAGRAM + '</a>' +
     ' <a href="' + escapeHtml(safeUrl(site.tiktokUrl)) + '" target="_blank" rel="noopener" aria-label="TikTok">' + ICON_TIKTOK + '</a>' +
@@ -55,7 +55,7 @@ export function renderFooter(args) {
     '<footer class="site"><div class="wrap">' +
     '<p class="coeur-centre" aria-hidden="true">♡</p>' +
     '<div class="cols">' +
-    '<section aria-label="' + escapeHtml(copy.brandSectionLabel) + '"><a class="logo" href="#/"><b>' + escapeHtml(site.brandName) + '</b><small>' + escapeHtml(site.brandSuffix) + '</small></a><br/>' + escapeHtml(site.copyright) + '</section>' +
+    '<section aria-label="' + escapeHtml(copy.brandSectionLabel) + '"><a class="logo" href="#/"><span class="nom">' + escapeHtml(site.brandName) + '</span><small>' + escapeHtml(site.brandSuffix) + '</small></a><br/>' + escapeHtml(site.copyright) + '</section>' +
     '<nav class="main" aria-label="' + escapeHtml(copy.navSecondaryLabel) + '">' + nav + '</nav>' +
     '<section class="droite" aria-label="' + escapeHtml(copy.contactSectionLabel) + '">' + escapeHtml(copy.followUs) +
     ' <a href="' + escapeHtml(safeUrl(site.instagramUrl)) + '" target="_blank" rel="noopener">Instagram</a> · ' +

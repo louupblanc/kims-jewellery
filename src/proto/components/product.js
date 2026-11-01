@@ -2,7 +2,8 @@
  * Cartes et grilles produits (présentation pure, données échappées).
  * @module components/product
  */
-import { escapeHtml, formatPrice, safeUrl } from '../lib/format.js';
+import { escapeHtml, formatPrice, safeUrl, sizeAttrs } from '../lib/format.js';
+import { imageDims } from '../catalogue.js';
 
 /**
  * @param {{ name:string, slug:string, price:number, image:string }} product
@@ -14,7 +15,7 @@ export function renderProductCard(product) {
   return (
     '<li><article class="card">' +
     '<a href="' + escapeHtml(href) + '" aria-label="' + escapeHtml(label) + '">' +
-    '<figure><img src="' + escapeHtml(safeUrl(product.image)) + '" alt="' + escapeHtml(product.name) + '" loading="lazy" />' +
+    '<figure><img src="' + escapeHtml(safeUrl(product.image)) + '"' + sizeAttrs(imageDims(product)) + ' alt="' + escapeHtml(product.name) + '" loading="lazy" />' +
     '<figcaption><span>' + escapeHtml(product.name) + '</span><span class="prix">' + escapeHtml(formatPrice(product.price)) + '</span></figcaption></figure>' +
     '</a></article></li>'
   );
