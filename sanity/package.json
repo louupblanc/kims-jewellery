@@ -6,6 +6,7 @@
   "description": "Studio Sanity de Kim's Jewellery. Les dépendances sont installées à la racine du projet (npm install à la racine) et résolues en remontant l'arborescence : ne JAMAIS lancer npm install dans ce dossier (cela dupliquerait react/sanity pour rien).",
   "dependencies": {
     "@sanity/icons": "^5.2.3",
+    "@sanity/locale-fr-fr": "^1.2.37",
     "@sanity/ui": "^4.4.9",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",

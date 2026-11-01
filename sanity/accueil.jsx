@@ -36,7 +36,10 @@ const carte = {
 }
 const titreCarte = {fontFamily: SERIF, fontSize: 17, margin: '14px 0 0'}
 const texteCarte = {fontSize: 13, lineHeight: 1.6, margin: '8px 0 0', color: ENCRE}
-const lienAction = {fontSize: 13, fontWeight: 600, margin: '12px 0 0'}
+const lienAction = {fontSize: 13, fontWeight: 600, margin: '12px 0 0', color: TERRE}
+// Couleur posée sur chaque lien : la feuille de style du navigateur impose
+// sinon son bleu par défaut aux <a> (l'héritage seul ne suffit pas).
+const lien = {color: TERRE}
 const srOnly = {
   position: 'absolute',
   width: 1,
@@ -62,7 +65,7 @@ function useCatalogueStats() {
     let actif = true
     client
       .fetch(
-        '{produits: count(*[_type == "product" && status == "publie"]), categories: count(*[_type == "collection" && published == true])}'
+        '{produits: count(*[_type == "product" && !(_id in path("drafts.**")) && archived != true]), categories: count(*[_type == "collection" && !(_id in path("drafts.**"))])}'
       )
       .then((res) => {
         if (actif) setStats(res)
@@ -88,8 +91,16 @@ export function Accueil(props) {
   const siteUrl = props.tool?.options?.siteUrl || process.env.SANITY_STUDIO_SITE_URL || null
   const stats = useCatalogueStats()
   const guideRef = useRef(null)
+  // Surbrillance brève du guide : le bouton « Voir le mode d'emploi »
+  // doit avoir un effet visible même quand le guide est déjà à l'écran
+  // (scrollIntoView seul ne fait rien dans ce cas).
+  const [guideFlash, setGuideFlash] = useState(false)
+  const flashTimer = useRef(null)
 
   function allerAuGuide() {
+    if (flashTimer.current) clearTimeout(flashTimer.current)
+    setGuideFlash(true)
+    flashTimer.current = setTimeout(() => setGuideFlash(false), 1800)
     if (guideRef.current) guideRef.current.scrollIntoView({behavior: 'smooth', block: 'start'})
   }
 
@@ -145,7 +156,7 @@ export function Accueil(props) {
             <h3 style={titreCarte}>Ajouter un bijou</h3>
             <p style={texteCarte}>Photo, nom, prix, catégorie : 2 minutes.</p>
             <p style={lienAction}>
-              <IntentLink intent="create" params={{type: 'product'}}>
+              <IntentLink intent="create" params={{type: 'product'}} style={lien}>
                 Commencer
               </IntentLink>
             </p>
@@ -182,7 +193,7 @@ export function Accueil(props) {
             <p style={texteCarte}>Ouvre la boutique comme tes clientes.</p>
             {siteUrl && (
               <p style={lienAction}>
-                <a href={siteUrl} target="_blank" rel="noreferrer">
+                <a href={siteUrl} target="_blank" rel="noreferrer" style={lien}>
                   Ouvrir dans un nouvel onglet
                 </a>
               </p>
@@ -191,7 +202,16 @@ export function Accueil(props) {
         </div>
       </section>
 
-      <section aria-labelledby="guide-titre" ref={guideRef} style={{...carte, marginTop: 20}}>
+      <section
+        aria-labelledby="guide-titre"
+        ref={guideRef}
+        style={{
+          ...carte,
+          marginTop: 20,
+          transition: 'box-shadow .3s ease',
+          ...(guideFlash ? {boxShadow: '0 0 0 3px ' + TERRE} : null),
+        }}
+      >
         <h2 id="guide-titre" style={{fontFamily: SERIF, fontSize: 22, margin: 0}}>
           Mode d&rsquo;emploi en 3 étapes
         </h2>

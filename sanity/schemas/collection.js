@@ -25,13 +25,6 @@ export default {
       type: 'number',
       description: 'Ordre des pastilles de filtre sur la page Collection.',
     },
-    {
-      name: 'published',
-      title: 'Visible sur le site',
-      type: 'boolean',
-      description: 'Décocher = la catégorie et son filtre disparaissent du site.',
-      initialValue: true,
-    },
   ],
   preview: {
     select: {title: 'title', media: 'cover'},

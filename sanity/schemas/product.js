@@ -80,13 +80,11 @@ export default {
       initialValue: false,
     },
     {
-      name: 'status',
-      title: 'État',
-      type: 'string',
-      description: '« publié » = visible sur le site. « brouillon » = invisible, en préparation.',
-      options: {list: ['brouillon', 'publie', 'archive'], layout: 'radio'},
-      initialValue: 'brouillon',
-      validation: (Rule) => Rule.required(),
+      name: 'archived',
+      title: 'Archivé (retiré du site, fiche conservée)',
+      type: 'boolean',
+      description: 'Cocher pour retirer ce bijou du site sans perdre sa fiche. Laisser décoché sinon.',
+      initialValue: false,
     },
     {
       name: 'order',
@@ -96,11 +94,11 @@ export default {
     },
   ],
   preview: {
-    select: {title: 'name', price: 'price', etat: 'status', media: 'images.0'},
-    prepare({title, price, etat, media}) {
+    select: {title: 'name', price: 'price', archived: 'archived', media: 'images.0'},
+    prepare({title, price, archived, media}) {
       return {
         title,
-        subtitle: (price != null ? price + ' €' : 'Prix ?') + (etat ? ' • ' + etat : ''),
+        subtitle: (price != null ? price + ' €' : 'Prix ?') + (archived ? ' • archivé' : ''),
         media,
       };
     },

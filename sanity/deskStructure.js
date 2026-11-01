@@ -17,6 +17,7 @@ export const structure = (S) =>
         .child(
           S.documentTypeList('product')
             .title('Tous les bijoux')
+            .defaultLayout('media')
             .defaultOrdering([{field: 'order', direction: 'asc'}])
         ),
       S.listItem()
@@ -26,6 +27,7 @@ export const structure = (S) =>
         .child(
           S.documentList()
             .title('Coups de cœur')
+            .defaultLayout('media')
             .schemaType('product')
             .filter('_type == "product" && featured == true')
             .defaultOrdering([{field: 'order', direction: 'asc'}])

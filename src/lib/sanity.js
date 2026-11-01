@@ -32,7 +32,7 @@ export async function getCatalogue() {
     const local = await import('./catalogue-fallback.js');
     return local.fallback;
   }
-  const q = '{ "products": *[_type=="product" && status=="publie"]{name,slug,price,description,material,images,"imgDims": images[0].asset->metadata.dimensions,vintedUrl,featured,order,category->{title,slug}}, "collections": *[_type=="collection" && published==true]{title,slug,description,order}, "settings": *[_type=="settings"][0]{brandName,tagline,instagramUrl,tiktokUrl,vintedProfileUrl} }';
+  const q = '{ "products": *[_type=="product" && !(_id in path("drafts.**")) && archived != true]{name,slug,price,description,material,images,"imgDims": images[0].asset->metadata.dimensions,vintedUrl,featured,order,category->{title,slug}}, "collections": *[_type=="collection" && !(_id in path("drafts.**"))]{title,slug,description,order}, "settings": *[_type=="settings"][0]{brandName,tagline,instagramUrl,tiktokUrl,vintedProfileUrl} }';
   try {
     return await sanity.fetch(q);
   } catch (err) {

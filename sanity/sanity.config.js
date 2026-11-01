@@ -1,7 +1,9 @@
 import {HomeIcon} from '@sanity/icons/Home';
+import {frFRLocale} from '@sanity/locale-fr-fr';
 import {defineConfig} from 'sanity';
 import {structureTool} from 'sanity/structure';
 import {Accueil} from './accueil.jsx';
+import {KimsIcon} from './kimsIcon.jsx';
 import {schemaTypes} from './schemas/index.js';
 import {structure} from './deskStructure.js';
 import {kimTheme} from './theme.js';
@@ -14,11 +16,13 @@ const dataset = process.env.SANITY_STUDIO_DATASET || 'production';
 export default defineConfig({
   name: 'kims-jewellery',
   title: "Kim'ys Jewellery — Administration",
+  subtitle: 'Administration',
+  icon: KimsIcon,
   projectId,
   dataset,
   basePath: '/',
   theme: kimTheme,
-  plugins: [structureTool({structure})],
+  plugins: [frFRLocale(), structureTool({structure})],
   // « Accueil » en premier = page d'arrivée de Kim (premier outil = route
   // par défaut). Le reste (structure, releases…) suit inchangé.
   tools: (prev) => [
