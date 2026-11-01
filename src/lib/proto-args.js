@@ -70,10 +70,13 @@ export function toProtoSite(data) {
   const s = data.settings ?? {};
   /** @type {Record<string, string>} */
   const site = { ...SITE };
-  for (const key of ['tagline', 'instagramUrl', 'tiktokUrl', 'vintedProfileUrl']) {
+  for (const key of ['brandName', 'brandSuffix', 'tagline', 'instagramUrl', 'tiktokUrl', 'vintedProfileUrl']) {
     const v = s[key];
     if (typeof v === 'string' && v !== '') site[key] = v;
   }
+  // Seul champ effaçable : un suffixe vidé dans le Studio retire le suffixe
+  // du site (les autres champs vides gardent leur valeur par défaut).
+  if (s.brandSuffix === '') site.brandSuffix = '';
   return site;
 }
 

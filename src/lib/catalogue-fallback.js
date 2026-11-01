@@ -4,7 +4,8 @@
 /** @type {import('./cms-types.js').CatalogueData} */
 export const fallback = {
   settings: {
-    brandName: "Kim's Jewellery",
+    brandName: "Kim's",
+    brandSuffix: "JEWELLERY",
     tagline: "Des bijoux tendance, une signature personnelle.",
     instagramUrl: "https://www.instagram.com/aura_jewellery00",
     tiktokUrl: "https://www.tiktok.com/@aura_jewellery00",

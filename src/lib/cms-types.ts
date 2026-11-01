@@ -38,6 +38,7 @@ export interface CmsProduct {
 /** Réglages marque (tout optionnel : le repli local complète). */
 export interface CmsSettings {
   brandName?: string;
+  brandSuffix?: string;
   tagline?: string;
   instagramUrl?: string;
   tiktokUrl?: string;

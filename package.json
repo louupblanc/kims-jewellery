@@ -1,1 +1,16 @@
-{"dependencies":{"@astrojs/sitemap":"^3.7.4","@sanity/client":"^8.14.1","@sanity/image-url":"^2.1.1","astro":"^7.4.4"},"devDependencies":{"@astrojs/check":"^0.9.12","react":"^19.3.1","react-dom":"^19.3.1","sanity":"^6.21.0","typescript":"^6.0.3"},"engines":{"node":">=22.23.4"},"name":"kims-jewellery","private":true,"scripts":{"build":"astro build","check":"astro check","dev":"astro dev","preview":"astro preview","studio":"cd sanity && sanity dev","studio:deploy":"cd sanity && sanity deploy"},"type":"module","version":"0.1.0"}
+{
+  "name": "kims-jewellery-studio",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Studio Sanity de Kim's Jewellery. Les dépendances sont installées à la racine du projet (npm install à la racine) et résolues en remontant l'arborescence : ne JAMAIS lancer npm install dans ce dossier (cela dupliquerait react/sanity pour rien).",
+  "dependencies": {
+    "@sanity/icons": "^5.2.3",
+    "@sanity/locale-fr-fr": "^1.2.37",
+    "@sanity/ui": "^4.4.9",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "sanity": "^6.21.0",
+    "styled-components": "^6.1.15"
+  }
+}
