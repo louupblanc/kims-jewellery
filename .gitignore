@@ -1,0 +1,19 @@
+# Secrets locaux : JAMAIS commiter (.env reste sur ta machine ;
+# les valeurs vont dans Cloudflare Pages > Settings > Environment Variables)
+.env
+.env.local
+
+# Dépendances et build (régénérables)
+node_modules/
+dist/
+.astro/
+
+# Sanity Studio (cache local, clés perso)
+sanity/.sanity/
+sanity/dist/
+sanity/node_modules/
+
+# Système / éditeurs
+.DS_Store
+Thumbs.db
+*.log

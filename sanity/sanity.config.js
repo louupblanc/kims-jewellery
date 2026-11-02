@@ -1,8 +1,10 @@
+import {HelpCircleIcon} from '@sanity/icons/HelpCircle';
 import {HomeIcon} from '@sanity/icons/Home';
 import {frFRLocale} from '@sanity/locale-fr-fr';
 import {defineConfig} from 'sanity';
 import {structureTool} from 'sanity/structure';
 import {Accueil} from './accueil.jsx';
+import {Aide} from './aide.jsx';
 import {KimsIcon} from './kimsIcon.jsx';
 import {schemaTypes} from './schemas/index.js';
 import {structure} from './deskStructure.js';
@@ -24,7 +26,8 @@ export default defineConfig({
   theme: kimTheme,
   plugins: [frFRLocale(), structureTool({structure})],
   // « Accueil » en premier = page d'arrivée de Kim (premier outil = route
-  // par défaut). Le reste (structure, releases…) suit inchangé.
+  // par défaut), suivi de l'« Aide » (guide pas-à-pas). Le reste
+  // (structure, releases…) suit inchangé.
   tools: (prev) => [
     {
       name: 'accueil',
@@ -37,6 +40,12 @@ export default defineConfig({
         // à mettre à jour si le domaine change — jamais en dur ici.
         siteUrl: process.env.SANITY_STUDIO_SITE_URL,
       },
+    },
+    {
+      name: 'aide',
+      title: 'Aide',
+      icon: HelpCircleIcon,
+      component: Aide,
     },
     ...prev,
   ],

@@ -16,4 +16,4 @@
 {"_id":"collection-bagues","_type":"collection","title":"Bagues","slug":{"_type":"slug","current":"bagues"},"order":1}
 {"_id":"collection-accessoires","_type":"collection","title":"Accessoires","slug":{"_type":"slug","current":"accessoires"},"order":2}
 {"_id":"collection-bracelets","_type":"collection","title":"Bracelets","slug":{"_type":"slug","current":"bracelets"},"order":3}
-{"_id":"settings","_type":"settings","brandName":"Kim's Jewellery","tagline":"Des bijoux tendance, une signature personnelle.","instagramUrl":"https://www.instagram.com/aura_jewellery00","tiktokUrl":"https://www.tiktok.com/@aura_jewellery00","aboutText":""}
+{"_id":"settings","_type":"settings","brandName":"Kim's","brandSuffix":"JEWELLERY","tagline":"Des bijoux tendance, une signature personnelle.","instagramUrl":"https://www.instagram.com/aura_jewellery00","tiktokUrl":"https://www.tiktok.com/@aura_jewellery00","aboutText":""}

@@ -1,45 +1,50 @@
 /**
  * Écran d'accueil du Studio (« Bienvenue Kim »).
  *
- * Première page vue par Kim : un bonjour, trois actions larges et un
- * mode d'emploi en trois étapes. Aucune logique métier ici — juste des
- * liens vers les bons endroits (création via « intent », guide en page,
- * vitrine via l'URL passée en options de l'outil).
+ * Première page vue par Kim : un bonjour, trois actions larges et un rappel
+ * vers l'onglet « Aide » (le guide pas-à-pas vit dans son propre outil
+ * `aide.jsx`, pas ici — l'accueil reste léger).
+ * Aucune logique métier ici — juste des liens vers les bons endroits
+ * (création via « intent », guide en page, vitrine via paramètre).
  *
  * Volontaire : AUCUNE dépendance à @sanity/ui (ni à son système de
  * spacing/props, qui a déjà bougé entre les majeures sans casser le
  * build — `space` est devenu `never` en v4 : le code compilait mais la
  * mise en page s'effondrait). HTML brut + styles inline uniquement :
  * ça rend pareil sur toutes les versions du Studio.
+ * Les couleurs suivent le thème clair/sombre du Studio (hook natif
+ * `useColorScheme`) : pas de blanc qui jure sur fond sombre.
  * Seules dépendances : react, @sanity/icons (sous-chemins), sanity.
  */
-import {useEffect, useRef, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {AddIcon} from '@sanity/icons/Add'
 import {EyeOpenIcon} from '@sanity/icons/EyeOpen'
 import {TagIcon} from '@sanity/icons/Tag'
-import {useClient} from 'sanity'
+import {useClient, useColorScheme} from 'sanity'
 import {IntentLink} from 'sanity/router'
 
-const TERRE = '#A68A68'
-const ENCRE = '#3A2C22'
-const DOUX = '#8A7A68'
-const CARTE = '#FFFDF9'
-const BORD = '#E7DAC4'
 const SERIF = 'Georgia, "Times New Roman", serif'
 
-const carte = {
-  background: CARTE,
-  border: '1px solid ' + BORD,
-  borderRadius: 10,
-  padding: 24,
-  color: ENCRE,
+// Palettes clair/sombre : mêmes rôles, mêmes contrastes. Le sombre reprend
+// les tons du Studio (fond bleuté profond, texte écru) au lieu d'imposer
+// le crème de la marque, qui jure sur fond noir.
+const THEMES = {
+  light: {
+    carte: '#FFFDF9',
+    bord: '#E7DAC4',
+    encre: '#3A2C22',
+    doux: '#8A7A68',
+    accent: '#A68A68',
+  },
+  dark: {
+    carte: '#23262F',
+    bord: '#3A3F4D',
+    encre: '#F2EDE3',
+    doux: '#B3AC9E',
+    accent: '#C7A37E',
+  },
 }
-const titreCarte = {fontFamily: SERIF, fontSize: 17, margin: '14px 0 0'}
-const texteCarte = {fontSize: 13, lineHeight: 1.6, margin: '8px 0 0', color: ENCRE}
-const lienAction = {fontSize: 13, fontWeight: 600, margin: '12px 0 0', color: TERRE}
-// Couleur posée sur chaque lien : la feuille de style du navigateur impose
-// sinon son bleu par défaut aux <a> (l'héritage seul ne suffit pas).
-const lien = {color: TERRE}
+
 const srOnly = {
   position: 'absolute',
   width: 1,
@@ -81,8 +86,8 @@ function useCatalogueStats() {
   return stats
 }
 
-function IconeCarte({icone}) {
-  return <div style={{color: TERRE, lineHeight: 0}}>{icone}</div>
+function IconeCarte({icone, couleur}) {
+  return <div style={{color: couleur, lineHeight: 0}}>{icone}</div>
 }
 
 export function Accueil(props) {
@@ -90,27 +95,36 @@ export function Accueil(props) {
   // d'env SANITY_STUDIO_SITE_URL — jamais en dur (le domaine changera).
   const siteUrl = props.tool?.options?.siteUrl || process.env.SANITY_STUDIO_SITE_URL || null
   const stats = useCatalogueStats()
-  const guideRef = useRef(null)
-  // Surbrillance brève du guide : le bouton « Voir le mode d'emploi »
-  // doit avoir un effet visible même quand le guide est déjà à l'écran
-  // (scrollIntoView seul ne fait rien dans ce cas).
-  const [guideFlash, setGuideFlash] = useState(false)
-  const flashTimer = useRef(null)
+  // Couleurs du Studio (clair/sombre, réglable par Kim via l'icône
+  // soleil/lune). Lecture défensive : objet {scheme} ou chaîne nue.
+  const couleurStudio = useColorScheme()
+  const scheme =
+    couleurStudio?.scheme === 'light' || couleurStudio === 'light' ? 'light' : 'dark'
+  const T = THEMES[scheme]
 
-  function allerAuGuide() {
-    if (flashTimer.current) clearTimeout(flashTimer.current)
-    setGuideFlash(true)
-    flashTimer.current = setTimeout(() => setGuideFlash(false), 1800)
-    if (guideRef.current) guideRef.current.scrollIntoView({behavior: 'smooth', block: 'start'})
+  const carte = {
+    background: T.carte,
+    border: '1px solid ' + T.bord,
+    borderRadius: 10,
+    padding: 24,
+    color: T.encre,
   }
+  const titreCarte = {fontFamily: SERIF, fontSize: 17, margin: '14px 0 0', color: T.encre}
+  const texteCarte = {fontSize: 13, lineHeight: 1.6, margin: '8px 0 0', color: T.encre}
+  const lienAction = {fontSize: 13, fontWeight: 600, margin: '12px 0 0', color: T.accent}
+  // Couleur posée sur chaque lien : la feuille de style du navigateur impose
+  // sinon son bleu par défaut aux <a> (l'héritage seul ne suffit pas).
+  const lien = {color: T.accent}
 
   return (
     <div style={{maxWidth: 960, margin: '0 auto', padding: '32px 20px 48px'}}>
       <section aria-labelledby="accueil-titre" style={{...carte, textAlign: 'center'}}>
-        <h1 id="accueil-titre" style={{fontFamily: SERIF, fontSize: 30, margin: 0, color: ENCRE}}>
+        <h1 id="accueil-titre" style={{fontFamily: SERIF, fontSize: 30, margin: 0, color: T.encre}}>
           Bonjour Kim
         </h1>
-        <p style={{fontSize: 14, margin: '10px 0 0', color: DOUX}}>Que veux-tu faire aujourd&rsquo;hui ?</p>
+        <p style={{fontSize: 14, margin: '10px 0 0', color: T.doux}}>
+          Que veux-tu faire aujourd&rsquo;hui ?
+        </p>
         {stats && (
           <p style={{margin: '14px 0 0'}}>
             <span
@@ -152,7 +166,7 @@ export function Accueil(props) {
         </h2>
         <div style={{display: 'flex', flexWrap: 'wrap', gap: 16}}>
           <div style={{...carte, flex: '1 1 220px'}}>
-            <IconeCarte icone={<AddIcon width={28} height={28} />} />
+            <IconeCarte icone={<AddIcon width={28} height={28} />} couleur={T.accent} />
             <h3 style={titreCarte}>Ajouter un bijou</h3>
             <p style={texteCarte}>Photo, nom, prix, catégorie : 2 minutes.</p>
             <p style={lienAction}>
@@ -163,34 +177,18 @@ export function Accueil(props) {
           </div>
 
           <div style={{...carte, flex: '1 1 220px'}}>
-            <IconeCarte icone={<TagIcon width={28} height={28} />} />
+            <IconeCarte icone={<TagIcon width={28} height={28} />} couleur={T.accent} />
             <h3 style={titreCarte}>Changer un prix</h3>
             <p style={texteCarte}>
-              Clique sur le bijou dans « Mes bijoux », modifie le prix, Publier.
-            </p>
-            <p style={lienAction}>
-              <button
-                type="button"
-                onClick={allerAuGuide}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  padding: 0,
-                  cursor: 'pointer',
-                  color: 'inherit',
-                  font: 'inherit',
-                  textDecoration: 'underline',
-                }}
-              >
-                Voir le mode d&rsquo;emploi
-              </button>
+              Cliquer sur le bijou dans « Mes bijoux », modifier le prix, Publier. Voir la
+              fiche n°2 de l&apos;onglet Aide.
             </p>
           </div>
 
           <div style={{...carte, flex: '1 1 220px'}}>
-            <IconeCarte icone={<EyeOpenIcon width={28} height={28} />} />
+            <IconeCarte icone={<EyeOpenIcon width={28} height={28} />} couleur={T.accent} />
             <h3 style={titreCarte}>Voir le site</h3>
-            <p style={texteCarte}>Ouvre la boutique comme tes clientes.</p>
+            <p style={texteCarte}>Ouvrir la boutique publique pour vérifier.</p>
             {siteUrl && (
               <p style={lienAction}>
                 <a href={siteUrl} target="_blank" rel="noreferrer" style={lien}>
@@ -202,31 +200,13 @@ export function Accueil(props) {
         </div>
       </section>
 
-      <section
-        aria-labelledby="guide-titre"
-        ref={guideRef}
-        style={{
-          ...carte,
-          marginTop: 20,
-          transition: 'box-shadow .3s ease',
-          ...(guideFlash ? {boxShadow: '0 0 0 3px ' + TERRE} : null),
-        }}
-      >
-        <h2 id="guide-titre" style={{fontFamily: SERIF, fontSize: 22, margin: 0}}>
-          Mode d&rsquo;emploi en 3 étapes
+      <section aria-labelledby="guide-titre" style={{...carte, marginTop: 20}}>
+        <h2 id="guide-titre" style={{fontFamily: SERIF, fontSize: 22, margin: 0, color: T.encre}}>
+          Un doute ?
         </h2>
-        <ol style={{fontSize: 14, lineHeight: 1.7, margin: '12px 0 0', paddingLeft: 22}}>
-          <li>
-            <strong>Mes bijoux</strong> (menu de gauche) → clique sur le bijou à modifier, ou crée-en un
-            nouveau avec « Ajouter un bijou ».
-          </li>
-          <li>
-            Change ce que tu veux : <strong>la 1<sup>re</sup> photo = celle affichée sur le site</strong>.
-          </li>
-          <li>
-            Appuie sur <strong>Publier</strong> en bas → le site se met à jour tout seul en ~2 minutes.
-          </li>
-        </ol>
+        <p style={{fontSize: 14, lineHeight: 1.7, margin: '12px 0 0'}}>
+          Procédures détaillées dans l&apos;onglet Aide (en haut, à côté d&apos;Accueil).
+        </p>
       </section>
     </div>
   )

@@ -5,7 +5,18 @@ export default {
   title: 'Réglages marque',
   type: 'document',
   fields: [
-    {name: 'brandName', title: 'Nom affiché', type: 'string'},
+    {
+      name: 'brandName',
+      title: 'Nom',
+      type: 'string',
+      description: 'Affiché en grand (ex. Kim’s).',
+    },
+    {
+      name: 'brandSuffix',
+      title: 'Suffixe',
+      type: 'string',
+      description: 'Petit texte à côté du nom (ex. JEWELLERY). Vide = aucun suffixe.',
+    },
     {name: 'tagline', title: 'Signature', type: 'string'},
     {
       name: 'instagramUrl',

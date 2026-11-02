@@ -24,7 +24,9 @@ chaque publication.
    `PUBLIC_SANITY_PROJECT_ID=<Project ID>`, `PUBLIC_SANITY_DATASET=production`.
 2. Dans `sanity/` : `cp .env.example ../.env` n’existe pas — créer
    `sanity/.env` avec :
-   `SANITY_STUDIO_PROJECT_ID=<Project ID>` et `SANITY_STUDIO_DATASET=production`.
+   `SANITY_STUDIO_PROJECT_ID=<Project ID>`, `SANITY_STUDIO_DATASET=production`
+   et `SANITY_STUDIO_SITE_URL=https://<ton-domaine>` (lien « Voir le site »
+   dans l’accueil du Studio).
 
 ## 2. Importer le catalogue actuel (3 min)
 
@@ -59,10 +61,14 @@ Choisir le nom proposé (`kims-jewellery`) → interface publique sur
 https://www.sanity.io/manage → projet → Members → **Editor**.
 Elle se connecte avec son e-mail, sans terminal.
 
-Interface : « Mes bijoux » (ajouter/modifier/dépublier),
+Interface : « Accueil » (page d’arrivée : 3 actions + guide, teinte terre cuite via `sanity/theme.js`),
+« Mes bijoux » (ajouter/modifier/dépublier),
 « Coups de cœur », « Catégories » (créer « Colliers » ou
 « Boucles d’oreilles » quand Kim confirme, sans code),
 « Réglages marque » (Instagram, TikTok, Vinted, textes).
+Français : le pack `@sanity/locale-fr-fr` est installé — chacun choisit
+« Français » dans le menu utilisateur (avatar en haut à droite) ; les
+boutons système restent en anglais tant que ce n’est pas fait.
 
 ## 4. Déployer le site (10 min)
 
