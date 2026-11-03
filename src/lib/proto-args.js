@@ -77,6 +77,10 @@ export function toProtoSite(data) {
   // Seul champ effaçable : un suffixe vidé dans le Studio retire le suffixe
   // du site (les autres champs vides gardent leur valeur par défaut).
   if (s.brandSuffix === '') site.brandSuffix = '';
+  // Mention légale : suit automatiquement Nom + Suffixe (même format
+  // qu'avant pour les valeurs par défaut).
+  const marque = site.brandName + (site.brandSuffix ? ' ' + site.brandSuffix : '');
+  site.copyright = '© 2026 ' + marque + '. Tous droits réservés.';
   return site;
 }
 
@@ -87,13 +91,17 @@ export function toProtoSite(data) {
  * @returns {import('./cms-types.js').ProtoArgs & T}
  */
 export function baseArgs(data, extra) {
+  const site = toProtoSite(data);
+  const marque = site.brandName + (site.brandSuffix ? ' ' + site.brandSuffix : '');
   return Object.assign(
     {
-      site: toProtoSite(data),
+      site,
       nav: NAV_MAIN,
       navSecondary: NAV_SECONDARY,
       legalLinks: LEGAL_LINKS,
-      chrome: CHROME_COPY,
+      // Libellé d'accueil du logo : suit Nom + Suffixe (pas de mutation de
+      // CHROME_COPY, partagé tel quel partout ailleurs).
+      chrome: {...CHROME_COPY, brandHomeLabel: marque + ' — accueil'},
       products: toProtoProducts(data),
       categories: toProtoCategories(data),
     },
